@@ -1,0 +1,24 @@
+header {
+  @include _inset(32px, 32px, 0, 32px);
+  position: fixed;
+  z-index: 739;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+#logo {
+
+}
+
+.ul-nav {
+  display: flex;
+
+  li {
+
+  }
+
+  a {
+
+  }
+}
