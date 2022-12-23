@@ -700,181 +700,25 @@ M.Cr = el => document.createElement(el)
         }
     }
 
-    class _n {
-        constructor(el) {
-            this.id = el.id
-            this.run()
-        }
-
-        static init() {
-            return Array.from(M.SelectAll('._n')).map(
-                (el) => {
-                    return new _n(el)
-                }
-            )
-        }
-
-        run() {
-            this.e('a')
-        }
-
-        e(a) {
-            let t = _M,
-                s = t.e.s,
-                id = this.id
-            M.E(M.Select("#" + id + "-open"), 'click', (e) => {
-                e.stopPropagation()
-                s.stop()
-
-                M.Cl(M.Select("#" + id), 'a', "is-active")
-                M.Cl(M.Select("#overlay"), 'a', "is-active")
-                if (id === 'search') M.Select('#searchInput').focus()
-            }, a)
-            M.E("." + id + "-close", 'click', (e) => {
-                e.stopPropagation()
-                s.run()
-
-                M.Cl(M.Select("#" + id), 'r', "is-active")
-                M.Cl(M.Select("#overlay"), 'r', "is-active")
-            }, a)
-        }
-    }
 
     class s {
         constructor() {
-            const t = _M
-            M.Bt(this, ["w", "key", "tS", "tM", "loop", "resize", "stop", "run"])
-            M.De(window, document, ["wheel", "keydown", "touchmove", "mousemove"], "vScroll", true)
-            t.scroll = {
-                x: 0,
-                y: 0,
-                deltaX: 0,
-                deltaY: 0,
-                origin: null,
-            }
-            this.options = {
-                mM: -1,
-                tM: -4.5,
-                fM: 15,
-                kS: 120,
-                speed: 0.5,
-            }
-            this.el = M.Select(".page")
-            this.prog = M.Select('.progress')
-            this.max = this.scrollY = 0
-            this.r = new M.Raf(this.loop)
-            this.isScrolling = (Math.abs(this.scrollY - _M.scroll.y) < 0.5)
 
         }
 
-        update(e) {
-            this.setMax()
-            const t = _M.scroll
-            t.y = M.R(M.Clamp(t.y + t.deltaY, 0, this.max), 0)
-            t.originalEvent = e
-        }
 
-        loop() {
-            const t = _M.scroll
-            this.scrollY = M.R(M.Lerp(this.scrollY, t.y, 0.1), 2)
-            M.T(this.prog, (this.scrollY / this.max - 1) * 100, 0, '%')
-            M.T(this.el, 0, -1 * this.scrollY, 'px')
-            this.r.on && (Math.abs(this.scrollY - t.y) < 0.5) && this.r.stop()
-        }
 
-        w(e) {
-            const t = _M.scroll
-            t.deltaX = e.deltaX * -1 * .556
-            t.deltaY = e.deltaY * -1 * .556
-            t.deltaX *= this.options.mM
-            t.deltaY *= this.options.mM
-            this.update(e)
-        }
 
-        key(e) {
-            const t = _M.scroll
-            t.deltaX = t.deltaY = 0
-            let key = [
-                    {c: 37, d: 'x', s: -1},
-                    {c: 39, d: 'x', s: 1},
-                    {c: 38, d: 'y', s: -1},
-                    {c: 40, d: 'y', s: 1},
-                    {c: 32, d: 'y', s: 2}
-                ],
-                n = key.length
-            for (let i = 0; i < n; i++) {
-                if (e.keyCode === key[i].c) {
-                    t[key[i].d === "x" ? "deltaX" : "deltaY"] = this.options.kS * key[i].s
-                }
-            }
-            (t.deltaX || t.deltaY) && this.update(e)
-        }
 
-        setMax() {
-            let s = M.Select(".page")
-            this.max = s.offsetHeight
-            this.max -= innerHeight
-        }
-
-        resize(e) {
-            this.setMax()
-            const t = _M.scroll
-            t.y = M.R(M.Clamp(t.y, 0, this.max), 0)
-            t.originalEvent = e
-            this.max || this.init()
-            this.max || this.r.on || this.r.run()
-            M.De('', document, '', "vScroll", false)
-
-        }
-
-        init() {
-            M.T(this.prog, -100, 0, '%')
-        }
-
-        tS(e) {
-            let T = (e.targetTouches) ? e.targetTouches[0] : e
-            this.tsX = T.pageX
-            this.tsY = T.pageY
-        }
-
-        tM(e) {
-            const t = _M
-            let T = (e.targetTouches) ? e.targetTouches[0] : e
-            t.scroll.deltaX = (T.pageX - this.tsX) * this.options.tM
-            t.scroll.deltaY = (T.pageY - this.tsY) * this.options.tM
-            this.tsX = T.pageX
-            this.tsY = T.pageY
-            this.update(e)
-        }
-
-        e(o) {
-            M.E(document, "wheel", this.w, o)
-            M.E(document, "touchstart", this.tS, o)
-            M.E(document, "touchmove", this.tM, o)
-            M.E(window, "resize", this.resize, o)
-            M.E(window, "orientationchange", this.resize, o)
-            M.E(document, "vScroll", () => this.r.on || this.r.run(), o)
-        }
 
         run() {
-            let _ = _M
-            _.isMobile || this.e('a')
-            _.isMobile && (document.body.style.overflow = "scroll")
+            (document.body.style.overflow = "scroll")
         }
 
         stop() {
-            let _ = _M
-            _.isMobile || this.e('r')
-            _.isMobile && (document.body.style.overflow = "hidden")
+            (document.body.style.overflow = "hidden")
         }
 
-        scrollTo(y) {
-            let _ = _M
-            _.isMobile && scrollTo(0, y)
-            _.isMobile || (_.scroll.y = y)
-            _.isMobile || M.De('', document, '', "vScroll", false)
-
-        }
     }
 
     class _s {
@@ -916,54 +760,6 @@ M.Cr = el => document.createElement(el)
         }
     }
 
-    class __s {
-        // todo stickyyyy
-        constructor(el) {
-            M.Bt(this, ['loop','cb'])
-            this.el = el
-            this.scrollY = 0
-            this.options = this.el.dataset.options
-            this.r = new M.Raf(this.loop)
-            this.s = new M.Scope(el,0.1)
-            this.run()
-        }
-
-        static init() {
-            return Array.from(M.SelectAll('.__s')).map(
-                (el) => {
-                    return new __s(el)
-                }
-            )
-        }
-        cb() {
-            this.s.visible() && (this.r.on || this.r.run())
-            this.s.visible() || (this.r.on && this.r.stop())
-        }
-
-        e(o) {
-            this.r.on || this.r.run()
-            M.E(document, "vScroll", this.cb, o)
-
-        }
-
-        run() {
-
-            this.e('a')
-        }
-        stop() {
-            this.e('r')
-        }
-
-        loop() {
-            let s = _M.e.s.scrollY + innerHeight / 2,
-                el = this.el,
-                c = M.XY.offsetTop(el) + el.offsetHeight / 2,
-                d = (c - s),
-                o = JSON.parse(this.options)
-            d = (d<0) ? d : o.c ? 0 :d
-            M.T(el,0, -1 * o.s * d, 'px')
-        }
-    }
 
     class b {
         constructor() {
@@ -984,9 +780,7 @@ M.Cr = el => document.createElement(el)
 
         init() {
             const _ = _M
-            _.e.s.init()
             _n.init()
-            !_M.isMobile && __s.init()
         }
 
         intro() {
@@ -997,7 +791,6 @@ M.Cr = el => document.createElement(el)
 
         run() {
             const _ = _M
-            _.e.s.run()
             this.n.run()
             this._s.run()
             this.t.run()

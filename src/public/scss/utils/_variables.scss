@@ -19,28 +19,28 @@
   /* color */
   --gsw:#26282a;
   --primary: var(--gsw);
-  --secondary: #FCFCFC;
+  --secondary: #ff8800;
   --light:#FCFCFC;
-  --dark:#181719;
+  --dark:#26282a;
   --l-grey:#F2EFE9;
   --grey: #798086;
-  --bg: #F2F2F2;
+  --bg: #FCFCFC;
 
   /* icon */
   --icon-font: "Material Symbols Outlined";
   --icon-font-size:20px;
   /* font-family */
-  --font-family-primary :'NewTitle-Variable';
-  --font-family-secondary:'Amulya-Variable';
-  --font-family-secondary-italic:'Amulya-VariableItalic';
-  --font-family-logo: 'NewTitle-Variable';
+  --font-family-primary :'Satoshi';
+  --font-family-secondary:'Satoshi';
+  --font-family-secondary-italic:'Satoshi-Italic';
+  --font-family-logo: 'Satoshi';
   /* utils */
   --min-height:100vh;
   --header-height: 90px;
   --cb: cubic-bezier(.17, .84, .44, 1);
   --ease-o3: cubic-bezier(0.33, 1, 0.68, 1);
   --border-radius-lg: 0px;
-  --border-radius-md: 0px;
+  --border-radius-md: 0.375rem;
   /* --hover : none | hover*/
   --hover: none;
   /*

@@ -1,2 +1,16 @@
 .w-text {
+  margin:   3rem  0 0;
+  h2 {
+      padding: 1em 0 0;
+      margin:0 0 0.125em;
+      border-top: 1px solid rgba(255, 136, 0, 0.25);
+    &::before {
+      content: '# ';
+      color: var(--secondary);
+    }
+  }
+  p,h3 {
+    color: rgba(46, 42, 57,0.75);
+
+  }
 }

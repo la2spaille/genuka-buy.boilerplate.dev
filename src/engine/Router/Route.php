@@ -36,6 +36,12 @@ class Route
         return true;
     }
 
+    public function getController()
+    {
+        $params = explode('#', $this->controller);
+        return $params[0];
+    }
+
     public function get_controller()
     {
         $params = explode('#', $this->controller);
@@ -45,12 +51,18 @@ class Route
 
     }
 
+    public function getPath()
+    {
+        return "/" . $this->path;
+    }
+
     private function param_match($match)
     {
         if (isset($this->params[$match[1]])) {
-            return '(' . $this->params[$match][1] . ')';
+            return '(' . $this->params[$match[1]] . ')';
         }
         return '([^/]+)';
 
     }
+
 }

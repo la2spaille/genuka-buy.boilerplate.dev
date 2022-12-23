@@ -2,32 +2,29 @@
 
 namespace Engine\Controller;
 
-use App\Model\Data;
 use \stdClass;
 use \App\Config\Head;
-use App\Config\Route;
 
 class Controller
 {
-    protected  $src;
-    protected  $head;
-    protected  $data;
+    protected $head;
+    protected $data;
+    private $device;
     private $callArgs;
     private $content;
 
-    public function __construct($callArgs)
+    public function __construct($callArgs = '')
     {
         $this->callArgs = $callArgs;
         $this->data = new stdClass;
     }
 
-    public function get_data($viewName)
-    {
-        $this->src = Data::get_data($viewName);
-    }
 
     public function render($viewName)
     {
+        // Device
+        $this->gDevice();
+
         // Head
         $this->head += Head::data();
 
@@ -45,20 +42,44 @@ class Controller
         // Content
         $this->content = $this->get_content(ROOT . 'app/View/page/' . $viewName . '.php');
         if (isset($_GET['xhr'])) {
-            $xhr['body'] = $this->content;
-            $routes = Route::get_routes();
-            foreach ($routes as $route) {
-                $xhr['routes'][$route['path']] = $route['view'];
-                $xhr['cache'][$route['path']]['title'] = $route['title'] ;
-                if(isset($route['model'])) {
-                    $this->get_data($route['model']);
-                }
-                $xhr['cache'][$route['path']]['html'] =  $this->get_content(ROOT . 'app/View/page/' . $route['view'] . '.php');
+            $xhr['title'] = $this->head['title'];
+            $xhr['html'] = $this->content;
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                return ($xhr);
+            } else {
+                header("Content-Type: application/json");
+                print json_encode(array('xhr' => $xhr));
             }
-            print json_encode($xhr);
         } else {
             echo $this->get_content(ROOT . 'app/View/base/boilerplate.php');
         }
+    }
+
+    private function gDevice()
+    {
+        $isM = $this->isMobile();
+        $this->isM = json_encode($isM);
+        $this->isD = json_encode(!$isM);
+        $this->device = $isM ? 'm' : 'd';
+    }
+
+    private function isMobile()
+    {
+        if (empty($_SERVER['HTTP_USER_AGENT'])) {
+            $is_mobile = false;
+        } else if (strpos($_SERVER['HTTP_USER_AGENT'], 'Mobile') !== false
+            || strpos($_SERVER['HTTP_USER_AGENT'], 'Android') !== false
+            || strpos($_SERVER['HTTP_USER_AGENT'], 'Silk/') !== false
+            || strpos($_SERVER['HTTP_USER_AGENT'], 'Kindle') !== false
+            || strpos($_SERVER['HTTP_USER_AGENT'], 'BlackBerry') !== false
+            || strpos($_SERVER['HTTP_USER_AGENT'], 'Opera Mini') !== false
+            || strpos($_SERVER['HTTP_USER_AGENT'], 'Opera Mobi') !== false) {
+            $is_mobile = true;
+        } else {
+            $is_mobile = false;
+        }
+
+        return $is_mobile;
     }
 
     private function get_content($url): string
@@ -71,6 +92,10 @@ class Controller
     public function renderError()
     {
         header('HTTP/1.1 404 Not Found', 404, TRUE);
+
+        // Device
+        $this->gDevice();
+
         echo $this->get_content(ROOT . 'app/View/base/p404.php');
     }
 }

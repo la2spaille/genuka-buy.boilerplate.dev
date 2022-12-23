@@ -1,21 +1,15 @@
 <header id="header" class="f-color_primary">
     <div class="c-logo header">
-        <a href="/" id="logo" class="f-family_logo f-600 f-48px">La2spaille</a>
+        <img id="logo" src="<?= $this->data->logo ?>">
+        <h1><?= $this->data->name ?></h1>
     </div>
-    <nav>
-        <ul class="ul-nav f-family_secondary f-16px">
-            <li class="is-active">
-                <a  class="f-family_secondary-italic" href="/">Work</a>
-                <span>Work</span>
-            </li>
-            <li>
-                <a class="f-family_secondary-italic" href="/about">About</a>
-                <span>About</span>
-            </li>
-            <li>
-                <a class="f-family_secondary-italic" href="/contact">Contact</a>
-                <span>Contact</span>
-            </li>
-        </ul>
-    </nav>
+    <div class="w-genuka_redirection">
+        <a target="_blank" rel="noopener" class="chakra-link css-13jvj27"
+           href="https://genuka.com/?from=<?= $this->data->company_name ?>">
+            <button type="button" class="btn-genuka_redirection">
+                <img alt="Boutton Genuka" src="https://dashboard.genuka.com/logo.png">
+                &nbsp;&nbsp;Créez votre page de vente sur Genuka
+            </button>
+        </a>
+    </div>
 </header>

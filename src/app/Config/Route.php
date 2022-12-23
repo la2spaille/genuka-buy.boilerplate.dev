@@ -21,30 +21,19 @@ class Route
      * 2. [a-z]+
      * 3. [a-z-]+
      * 4. [a-z0-9-]+
+     * 4. [a-zA-Z0-9-]+
      * 5. date|title|type
      */
 
     public static function init()
     {
-        $router = new Router();
+        Router::init();
+        Router::get('/:code_slug', 'Product#show')->with('code_slug','[a-zA-Z0-9-]+');
+        Router::p404('show');
+        Router::run();
 
-        $router->get('/', 'Home#show');
-
-        $router->p404('show');
-        $router->run();
 
     }
 
-    public static function get_routes()
-    {
-        return [
-            "/" => [
-                "path" => "/",
-                "title" => "la2spaille — Home",
-                "view" => "home",
-            ],
-
-        ];
-    }
 
 }

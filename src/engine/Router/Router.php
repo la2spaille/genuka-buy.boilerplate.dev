@@ -1,41 +1,48 @@
 <?php
 
 namespace Engine\Router;
+
 use \App\Core\RedirectTo;
+
 class Router
 {
-    private $url;
-    private $routes = [];
-    private $p404ControllerFn;
+    private static $url;
+    private static $routes = [];
+    private static $p404ControllerFn;
 
-    public function __construct() {
-        $this->url = $_GET['url'] ?? '';
-
-    }
-
-    public function get($path, $controller): Route
+    public static function init()
     {
-        return $this->add($path, $controller, "GET");
+        self::$url = isset($_GET['url']) ? $_GET['url'] : '';
+
     }
-    public function post ($path, $controller)
+
+    public static function get($path, $controller)
     {
-        return $this->add($path, $controller, "POST");
+        return self::add($path, $controller, "GET");
     }
-    public function p404 ($p404ControllerFn) {
-        $this->p404ControllerFn = $p404ControllerFn;
-    }
-    private function add($path, $controller, $method) : Route
+
+    private static function add($path, $controller, $method)
     {
         $route = new Route($path, $controller);
-        $this->routes["$method"][] = $route;
+        self::$routes["$method"][] = $route;
 
         return $route;
     }
 
-    public function run()
+    public static function post($path, $controller)
     {
-        foreach ($this->routes[$_SERVER["REQUEST_METHOD"]] as $route) {
-            if ($route->match($this->url)) {
+        return self::add($path, $controller, "POST");
+    }
+
+    public static function p404($p404ControllerFn)
+    {
+        self::$p404ControllerFn = $p404ControllerFn;
+    }
+
+    public static function run()
+    {
+        foreach (self::$routes[$_SERVER["REQUEST_METHOD"]] as $route) {
+            if ($route->match(self::$url)) {
                 return $route->get_controller();
             }
         }
@@ -43,7 +50,17 @@ class Router
         // Page 404
         $controller = 'App\\Controller\\P404\\P404';
         $controller = new $controller(false);
-        return call_user_func([$controller, $this->p404ControllerFn]);
+        return call_user_func([$controller, self::$p404ControllerFn]);
     }
+
+    /**
+     * @return array
+     */
+    public static function getRoutes()
+    {
+        return self::$routes;
+    }
+
+
 
 }
